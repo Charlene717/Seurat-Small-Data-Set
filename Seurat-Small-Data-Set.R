@@ -66,15 +66,17 @@
   for (i in 1:length(CellType.set)) {
     if(i==1){
       seuratObject_Small <- seuratObject[,seuratObject@meta.data[["Cell_type"]] %in% CellType.set[i]]
-      seuratObject_Small <- seuratObject_Small[,sample(1:100,50, replace = FALSE, prob = NULL)]
+      seuratObject_Small <- seuratObject_Small[,sample(1:nrow((seuratObject_Small@meta.data)),50, replace = FALSE, prob = NULL)]
     }else{
       seuratObject_Small_Temp <- seuratObject[,seuratObject@meta.data[["Cell_type"]] %in% CellType.set[i]]
-      seuratObject_Small_Temp <- seuratObject_Small_Temp[,sample(1:100,50, replace = FALSE, prob = NULL)]
+      seuratObject_Small_Temp <- seuratObject_Small_Temp[,sample(1:nrow((seuratObject_Small_Temp@meta.data)),50, replace = FALSE, prob = NULL)]
       seuratObject_Small <- merge(seuratObject_Small,seuratObject_Small_Temp)
     }
   }
   rm(i,seuratObject_Small_Temp)
 
+
+
 #### Save the RData ####
-  rm(list=setdiff(ls(), c("seuratObject_Small","Version")))
-  save.image(paste0(Version,"_Seurat-Small-Data-Set.RData"))
+  rm(list=setdiff(ls(), c("seuratObject_Small","Version","Save.Path")))
+  save.image(paste0(Save.Path,"/",Version,"_Seurat-Small-Data-Set.RData"))
