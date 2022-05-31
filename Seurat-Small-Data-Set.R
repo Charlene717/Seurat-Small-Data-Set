@@ -48,6 +48,18 @@
 
   # This .d5seurat object can then be read in manually
   seuratObject <- LoadH5Seurat("PRJCA001063.h5seurat")
+  seuratObject_Ori <- seuratObject
+#### Data preprocessing ####
+  seuratObject@meta.data[["orig.ident"]] <- sample(c(1,2),nrow(seuratObject@meta.data),replace = TRUE)
+  seuratObject@meta.data <- seuratObject@meta.data %>%
+                            relocate(orig.ident, .before = colnames(seuratObject@meta.data)[1])%>%
+                            relocate(n_counts, .before = colnames(seuratObject@meta.data)[1]) %>%
+                            relocate(n_genes, .before = colnames(seuratObject@meta.data)[1]) %>%
+
+
+                            rename(nFeature_RNA = n_genes, nCount_RNA = n_counts)
+
+
 
 #### Sampling ####
   # TTT <- sample(seuratObject@meta.data[["Cell_type"]] %>% unique(), 100, replace = TRUE, prob = NULL)
